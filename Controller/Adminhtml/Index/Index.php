@@ -87,7 +87,7 @@ class Index extends \Magento\Backend\App\Action
                             //replace the wrong baseurl
                             $tmp['Url'] = str_replace($pattern, $replacement, $fd_pr_tmp_url);
 
-                            if ($fd_oProduct->getImage() != "no_selection") {
+                            if ($fd_oProduct->getImage() != "") {
                                 $tmp['ImageUrl'] = $this->storeManager->getStore($id_store)->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $fd_oProduct->getImage();
                             }
                             else
@@ -119,7 +119,7 @@ class Index extends \Magento\Backend\App\Action
                         //replace the wrong baseurl
                         $tmp['Url'] = str_replace($pattern, $replacement, $fd_pr_tmp_url);
 
-                        if ($fd_oProduct->getImage() != "no_selection") {
+                        if ($fd_oProduct->getImage() != "") {
                             $tmp['ImageUrl'] = $this->storeManager->getStore($id_store)->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $fd_oProduct->getImage();
                         }
                         else

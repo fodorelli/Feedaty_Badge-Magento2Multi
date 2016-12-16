@@ -2,6 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <feedaty_global>
+
+        	<feedaty_preferences>
+        		<installation_type>0</installation_type>
+        	</feedaty_preferences>
+        	
             <feedaty_sendorder>
                 <sendorder>complete</sendorder>
             </feedaty_sendorder>

@@ -64,6 +64,7 @@ class InterceptOrder implements ObserverInterface
 
             $order_id = $order->getIncrementId();
             $id_store = $order->getStoreId();
+            $billingAddress = $order->getBillingAddress()->getCountryId();
 
             $verify = 0;
 
@@ -156,11 +157,9 @@ class InterceptOrder implements ObserverInterface
                 $tmp_order['CustomerEmail'] = $order->getCustomerEmail();
                 $tmp_order['Platform'] = "Magento ".$productMetadata->getVersion();
 
-                $shippingAddress = $order->getShippingAddress()->getCountryId();
-
-                if ( $shippingAddress == 'IT' || $shippingAddress == 'EN' ||  $shippingAddress == 'ES' ||  $shippingAddress == 'DE' || $shippingAddress == 'FR' )
+                if ( $billingAddress == 'IT' || $billingAddress == 'EN' ||  $billingAddress == 'ES' ||  $billingAddress == 'DE' || $billingAddress == 'FR' )
                 {
-                    $tmp_order['Culture'] = strtolower($shippingAddress);
+                    $tmp_order['Culture'] = strtolower($billingAddress);
                 }
                 else $tmp_order['Culture'] = 'en';
 
@@ -174,10 +173,9 @@ class InterceptOrder implements ObserverInterface
 
                 if($mode == 0) {
 
-                    $merchant_code = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-                    $merchant_secret = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_secret',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+                    $merchant_data = $webService->_get_MerchantData();
 
-                    $webService->send_order($fd_data, $merchant_code, $merchant_secret);
+                    $webService->send_order($fd_data, $merchant_data['code'], $merchant_data['secret']);
                 }
 
                 elseif ($mode == 1) {

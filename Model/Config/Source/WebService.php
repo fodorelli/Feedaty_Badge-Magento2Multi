@@ -47,27 +47,38 @@ class  WebService {
     */
     public function _get_MerchantData($store = null) {
 
-        $feedaty_code = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        $feedaty_code_multisite = unserialize($this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_code_multisite', \Magento\Store\Model\ScopeInterface::SCOPE_STORE));
+        $mode = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/installation_type', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
-        if (!is_null($store)) {
-            foreach ($feedaty_code_multisite as $record) {
-                foreach ($record as $k => $v)
-                    $tmp[$k] = $v;
-                if ($tmp['merchant_code_language'] == $store && strlen(trim($tmp['merchant_code'])) > 0 && strlen(trim($tmp['merchant_secret'])) > 0) {
-                    $feedaty_credentials['code'] = $tmp['merchant_code'];
-                    $feedaty_credentials['secret']  = $tmp['merchant_secret'];
+        //if mode is in multimerchant
+        if($mode == 1) {
+        
+            $feedaty_code_multisite = unserialize($this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_code_multisite', \Magento\Store\Model\ScopeInterface::SCOPE_STORE));
+
+            if (!is_null($store)) {
+                foreach ($feedaty_code_multisite as $record) {
+                    foreach ($record as $k => $v)
+                        $tmp[$k] = $v;
+                    if ($tmp['merchant_code_language'] == $store && strlen(trim($tmp['merchant_code'])) > 0 && strlen(trim($tmp['merchant_secret'])) > 0) {
+                        $feedaty_credentials['code'] = $tmp['merchant_code'];
+                        $feedaty_credentials['secret']  = $tmp['merchant_secret'];
+                    }
+                }
+            } else {
+                foreach ($feedaty_code_multisite as $record) {
+                    foreach ($record as $k => $v)
+                        $tmp[$k] = $v;
+                    if ($tmp['merchant_code_language'] == $this->storeManager->getStore()->getCode() && strlen(trim($tmp['merchant_code'])) > 0) {
+                        $feedaty_credentials['code'] = $tmp['merchant_code'];
+                        $feedaty_credentials['secret'] = $tmp['merchant_secret'];
+                    }
                 }
             }
-        } else {
-            foreach ($feedaty_code_multisite as $record) {
-                foreach ($record as $k => $v)
-                    $tmp[$k] = $v;
-                if ($tmp['merchant_code_language'] == $this->storeManager->getStore()->getCode() && strlen(trim($tmp['merchant_code'])) > 0) {
-                    $feedaty_credentials['code'] = $tmp['merchant_code'];
-                    $feedaty_credentials['secret'] = $tmp['merchant_secret'];
-                }
-            }
+        }
+
+        //if mode is in standard
+        else {
+            $feedaty_credentials['code'] = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            $feedaty_credentials['secret'] = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_secret', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         }
 
         return $feedaty_credentials;
@@ -267,6 +278,7 @@ class  WebService {
     *
     */
     public function getProductRichSnippet($product_id){
+
         $merchant_data = $this->_get_MerchantData();
         $path = 'http://white.zoorate.com/gen';
         $dati = array( 'w' => 'wp','MerchantCode' => $merchant_data['code'],'t' => 'microdata', 'version' => 2, 'sku' => $product_id );
@@ -290,6 +302,7 @@ class  WebService {
     *
     */
     public function getMerchantRichSnippet(){
+
         $merchant_data = $this->_get_MerchantData();
         $path = 'http://white.zoorate.com/gen';
         $dati = array(
@@ -370,12 +383,9 @@ class  WebService {
 
         $mode = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/installation_type', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
-        if($mode == 0) $feedaty_code = $this->scopeConfig->getValue('feedaty_global/feedaty_preferences/feedaty_code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-
-        elseif ($mode == 1) {
-            $merchant_data = $this->_get_MerchantData();
-            $feedaty_code = $merchant_data['code'];
-        }
+        $merchant_data = $this->_get_MerchantData();
+        $feedaty_code = $merchant_data['code'];
+    
 
         $string = "FeedatyData".$feedaty_code.$language;
 

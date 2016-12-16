@@ -4,16 +4,19 @@ namespace Feedaty\Badge\Block\System\Config\Form\Field;
 use \Magento\Framework\Data\Form\Element\AbstractElement;
 use \Magento\Backend\Block\Template\Context;
 use \Magento\Store\Model\StoreManagerInterface;
+use \Magento\Framework\App\Config\ScopeConfigInterface;
+
 
 class MerchantCodes extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray 
 {
 
 
 
-    public function __construct( Context $context, StoreManagerInterface $storeManager )
+    public function __construct( Context $context, StoreManagerInterface $storeManager, ScopeConfigInterface $scopeConfig )
     {
         $this->_storeManager = $storeManager;
-        
+        $this->_scopeConfig = $scopeConfig;
+
         parent::__construct($context);
     }
 
@@ -69,7 +72,8 @@ class MerchantCodes extends \Magento\Config\Block\System\Config\Form\Field\Field
     public function getArrayRows()
     {
     
-    
+        $mode = $this->_scopeConfig->getValue('feedaty_global/feedaty_preferences/installation_type', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
         foreach ($this->_storeManager->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
@@ -83,7 +87,8 @@ class MerchantCodes extends \Magento\Config\Block\System\Config\Form\Field\Field
         $element = $this->getElement();
         $rowColumnValues = [];
 
-        if ($element->getValue() && is_array($element->getValue())) {
+
+        if ($element->getValue() && is_array($element->getValue()) && $mode == 1) {
             foreach ($element->getValue() as $rowId => $row) {
                 unset($tmp);
                 foreach ($row as $key => $value) {
@@ -128,11 +133,18 @@ class MerchantCodes extends \Magento\Config\Block\System\Config\Form\Field\Field
         $this->_arrayRowsCache = $resultok;
 
         return $this->_arrayRowsCache;
+
     }
 
     protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $this->setElement($element);
+        $mode = $this->_scopeConfig->getValue('feedaty_global/feedaty_preferences/installation_type', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+        if ($mode == 0) {
+            $element->setDisabled('disabled');
+        }
+       
 
         $fieldId = $this->getElement()->getId();
 
@@ -141,7 +153,7 @@ class MerchantCodes extends \Magento\Config\Block\System\Config\Form\Field\Field
         $html = str_replace('class="action-delete" type="button"','class="action-delete" type="button" style="display:none"',$html);
 
         $this->_arrayRowsCache = null; // doh, the object is used as singleton!
-
+         
         return $html;
     }
 }

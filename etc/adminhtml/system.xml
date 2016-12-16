@@ -33,11 +33,11 @@
 
                 <field id="feedaty_code_multisite" translate="label" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Customer Fields Mapping</label>
-                    <frontend_model>Feedaty\Badge\Block\System\Config\Form\Field\MerchantCodes</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                     <depends>
                         <field id="installation_type">1</field>
                     </depends>
+                    <frontend_model>Feedaty\Badge\Block\System\Config\Form\Field\MerchantCodes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                 </field>
 
             </group>
