@@ -1,4 +1,4 @@
-### FEEDATY BADGE MULTI 2.0.2
+### FEEDATY BADGE MULTI 2.1.0
 ---------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
 Feedaty ti consente la gestione professionale
@@ -33,6 +33,35 @@ magento/module-widget				100.0.*
 
 
 ---------------------------------------------------------------------------------------------------------------------
+### INSTALL FEEDATY MODULE
+---------------------------------------------------------------------------------------------------------------------
+## Install from composer
+
+1st) move to your magento root directory
+ ```bash
+ # cd /var/www/html/path/to/your/magento-root-dir
+
+```
+
+2nd) add http://packagist.org/ repository in your composer.json file
+
+3rd) login as the owner of your magento filsystem, for example:
+```bash
+ # su magentouser
+```
+4th) require and install the package
+
+```bash
+ # composer require feedaty/module-badge-multi
+
+```
+ 
+## Install Feedaty module manually in app/code
+
+1st) Move Feedaty_Badge-2.1.0 directory in path/to/your/magento-root-dir/app/code/ and rename it Feedaty
+
+
+---------------------------------------------------------------------------------------------------------------------
 ### ENABLE FEEDATY MODULE
 ---------------------------------------------------------------------------------------------------------------------
 ## Enable Feedaty module from backend
@@ -44,7 +73,7 @@ magento/module-widget				100.0.*
 
 4th) Click on "Component Manager".
 
-5th) Enable "feedaty/module-badge".
+5th) Enable "feedaty/module-badge-multi".
 
 If a blank page returned, maybe you haven't a right configuration in your
 Magento installation.
@@ -68,11 +97,14 @@ or if your server run on Debian/Ubuntu:
 
  to let apache get the permission to write cache.
 
-## Enable Feedaty module from Magento consolle
+## enable module from Magento consolle 
+1st) login with the own of the magento installation for example:
 
-1st) Move Feedaty directory in path/to/your/magento-root-dir/app/code/
+```bash
+ # su magentouser
+```
 
-2nd) login with the own of the magento installation, after you must enter below commands:
+now enter below commands:
 
 ```bash
 
@@ -117,11 +149,10 @@ To setup Feedaty Widgets follow these steps;
 
 2nd) Click on "Configurations".
 
-3rd) Select the default scope, and insert Feedaty Merchant Code provided.
+3rd) Insert Feedaty merchant codes and Feedaty merchant secrets on relative stores .
 
 4th) Select preferences aboute module design, and set on enable widgets and/or product reviews.
 
-5th) check in other scopes, the configurations must works on the store scope.
 
 ### INFOS AND CONTACTS
 
