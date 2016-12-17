@@ -1,4 +1,4 @@
-### FEEDATY BADGE MULTI 2.1.0
+<h1> FEEDATY BADGE MULTI 2.1.0</h1>
 ---------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
 Feedaty ti consente la gestione professionale
@@ -6,7 +6,7 @@ di feedback e opinioni certificate dei tuoi clienti,
 migliorando il tuo posizionamento,
 la tua reputazione e le tue vendite online.
 
-### REQUIRED MAGENTO MODULES
+<h3>  REQUIRED MAGENTO MODULES </h3>
 
 magento/framework: 					100.0.*
 magento/module-store: 				100.0.*
@@ -26,16 +26,16 @@ magento/module-sales				100.0.*
 magento/module-translation			100.0.*
 magento/module-widget				100.0.*
 
-### REQUIRED SERVER CONFIGURATIONS
+<h3> REQUIRED SERVER CONFIGURATIONS </h3>
 
 - php >=5.5.27 | php 5.6.* | php 7.0.0
 - php-curl 
 
 
 ---------------------------------------------------------------------------------------------------------------------
-### INSTALL FEEDATY MODULE
+<h2> INSTALL FEEDATY MODULE </h2>
 ---------------------------------------------------------------------------------------------------------------------
-## Install from composer
+<h3> Install from composer </h3>
 
 1st) move to your magento root directory
  ```bash
@@ -56,15 +56,16 @@ magento/module-widget				100.0.*
 
 ```
  
-## Install Feedaty module manually in app/code
+<h3> Install Feedaty module manually in app/code </h3>
 
 1st) Move Feedaty_Badge-2.1.0 directory in path/to/your/magento-root-dir/app/code/ and rename it Feedaty
 
 
 ---------------------------------------------------------------------------------------------------------------------
-### ENABLE FEEDATY MODULE
+<h2> ENABLE FEEDATY MODULE </h2>
 ---------------------------------------------------------------------------------------------------------------------
-## Enable Feedaty module from backend
+<h3> Enable Feedaty module from backend </h3>
+
 1st) Move Feedaty directory in path/to/your/magento-root-dir/app/code/
 
 2nd) Clink on "System Config" in the left sidebar menu.
@@ -97,7 +98,7 @@ or if your server run on Debian/Ubuntu:
 
  to let apache get the permission to write cache.
 
-## enable module from Magento consolle 
+<h3> enable module from Magento consolle </h3>
 1st) login with the own of the magento installation for example:
 
 ```bash
@@ -119,13 +120,13 @@ now enter below commands:
  because magento can't write cache in var directory.
 
 -----------------------------------------------------------------------------------------------------------------------
-### DISABLE FEEDATY MODULE
+<h2> DISABLE FEEDATY MODULE </h2>
 -----------------------------------------------------------------------------------------------------------------------
-## Disable feedaty module from backend
+<h3> Disable feedaty module from backend</h3>
 
 same procedure like enabling, when you arrive in "component manager", select "Disable" and save your configuration.
 
-## Disable feedaty module from Magento Consolle.
+<h3> Disable feedaty module from Magento Consolle. </h3>
 
 1st) login with the own of the magento installation, after you must enter below commands:
 ```bash
@@ -135,14 +136,15 @@ same procedure like enabling, when you arrive in "component manager", select "Di
  # bin/magento module:disable Feedaty_Badge
 
 ```
+
 to clear static contents you can append "--clear-static-contents" in module:disable command
 If you append "--clear-static-contents" don't forget to run
 
  # bin/magento setup:di:compile
  # bin/magento setup:static-content:deploy
-
-### SETUP/CONFIG FEEDATY WIDGETS
-
+-----------------------------------------------------------------------------------------------------------------------
+<h2> SETUP/CONFIG FEEDATY WIDGETS </h2>
+-----------------------------------------------------------------------------------------------------------------------
 To setup Feedaty Widgets follow these steps;
 
 1st) Click on "Stores" in the left-side bar menu.
@@ -153,12 +155,12 @@ To setup Feedaty Widgets follow these steps;
 
 4th) Select preferences aboute module design, and set on enable widgets and/or product reviews.
 
-
-### INFOS AND CONTACTS
-
+-----------------------------------------------------------------------------------------------------------------------
+<h2> INFOS AND CONTACTS </h2>
+-----------------------------------------------------------------------------------------------------------------------
 www.zoorate.com
 www.feedaty.com
 
-### LICENSE
+<h2> LICENSE </h2>
 
 
