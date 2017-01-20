@@ -274,56 +274,77 @@ class  WebService {
     *
     * @param $product_id
     *
-    * @return $response - the html product's rich snippet
+    * @return $content - the html product's rich snippet
     *
     */
     public function getProductRichSnippet($product_id){
 
         $merchant_data = $this->_get_MerchantData();
-        $path = 'http://white.zoorate.com/gen';
-        $dati = array( 'w' => 'wp','MerchantCode' => $merchant_data['code'],'t' => 'microdata', 'version' => 2, 'sku' => $product_id );
-        $header = array( 'Content-Type: text/html','User-Agent: Fiddler' );
-        $dati = $this->serializeData($dati);
-        $path.='?'.$dati;
-        $ch = curl_init($path);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $cache = $om->get('Magento\Framework\App\CacheInterface');
+        $content = json_decode($cache->load("feedaty_prod_snip".$merchant_data['code'].$product_id));
+
+        if (!$content || strlen($content) < 5 || $content === "null") {
+
+            $path = 'http://white.zoorate.com/gen';
+            $dati = array( 'w' => 'wp','MerchantCode' => $merchant_data['code'],'t' => 'microdata', 'version' => 2, 'sku' => $product_id );
+            $header = array( 'Content-Type: text/html','User-Agent: Fiddler' );
+            $dati = $this->serializeData($dati);
+            $path.='?'.$dati;
+            $ch = curl_init($path);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
+            $content = curl_exec($ch);
+            curl_close($ch);
+
+            if (strlen($content) > 0)
+            $cache->save(json_encode($content), "feedaty_prod_snip".$merchant_data['code'].$product_id, array("feedaty_cache"), 3*60*60); // 3 hours of cache
+        }
+        return $content;
     }
     
 
     /**
     * Function getMerchantRichSnippet
     *
-    * @return $response - the html merchant's rich snippet
+    * @return $content - the html merchant's rich snippet
     *
     */
     public function getMerchantRichSnippet(){
 
         $merchant_data = $this->_get_MerchantData();
-        $path = 'http://white.zoorate.com/gen';
-        $dati = array(
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $cache = $om->get('Magento\Framework\App\CacheInterface');
+        $content = json_decode($cache->load("feedaty_store_snip".$merchant_data['code']));
+
+        if (!$content || strlen($content) < 5 || $content === "null") {
+
+            $path = 'http://white.zoorate.com/gen';
+            $dati = array(
                 'w' => 'wp',
                 'MerchantCode' => $merchant_data['code'],
                 't' => 'microdata',
                 'version' => 2,
-        );
-        $header = array('Content-Type: text/html',
+            );
+            $header = array('Content-Type: text/html',
                 'User-Agent: Fiddler'
-        );
-        $dati = $this->serializeData($dati);
-        $path.='?'.$dati;
-        $path = str_replace("=2&", "=2", $path);
-        $ch = curl_init($path);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
+            );
+            $dati = $this->serializeData($dati);
+            $path.='?'.$dati;
+            $path = str_replace("=2&", "=2", $path);
+            $ch = curl_init($path);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
+            $content = curl_exec($ch);
+            curl_close($ch);
+
+            if (strlen($content) > 0)
+            $cache->save(json_encode($content), "feedaty_store_snip".$merchant_data['code'], array("feedaty_cache"), 3*60*60); // 3 hours of cache
+        }
+
+        return $content;
     }
 
 
